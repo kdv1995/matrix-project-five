@@ -1,0 +1,14 @@
+.InputContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.Input {
+  font-size: 15px;
+  max-width: 50px;
+  padding: 5px;
+  border-radius: 5px;
+  &:not(last-child) {
+    margin-bottom: 5px;
+  }
+}

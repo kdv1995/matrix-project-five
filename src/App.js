@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import s from "./App.module.scss";
+import Button from "./components/UI/Button";
+import Input from "./components/UI/Input";
+import CreateTable from "./CreateTable";
+import { setCells, setColumns, setRows } from "./store/store";
 
-function App() {
+const App = () => {
+  const [rows, setRows] = useState(0);
+  const [columns, setColumns] = useState(0);
+  const [cells, setCells] = useState(0);
+  const dispatch = useDispatch();
+  const onCLick = () => {
+    dispatch(setRows(rows));
+    dispatch(setColumns(columns));
+    dispatch(setCells(cells));
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={s.App}>
+      <div className={s.AppContainer}>
+        <h1 className={s.AppHeading}>Matrix builder</h1>
+        <div className={s.RowsName}>
+          <Input
+            title="Enter the number of rows"
+            value={rows}
+            onChange={(event) => setRows(event.target.value)}
+          />
+        </div>
+        <div className={s.RowsName}>
+          <Input
+            title="Enter the number of columns"
+            value={columns}
+            onChange={(event) => setColumns(event.target.value)}
+          />
+        </div>
+        <div className={s.RowsName}>
+          <Input
+            title="Enter the number of cells"
+            value={cells}
+            onChange={(event) => setCells(event.target.value)}
+          />
+        </div>
+        <Button title="Create matrix" onClick={onCLick} />
+        <CreateTable />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
