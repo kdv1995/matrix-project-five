@@ -1,7 +1,8 @@
 import { legacy_createStore as createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 const initialState = {
-  rows: Math.floor(Math.random() * (999 - 100 + 1) + 100),
-  columns: Math.floor(Math.random() * (999 - 100 + 1) + 100),
+  rows: 0,
+  columns: 0,
   cells: 0,
 };
 
@@ -22,4 +23,4 @@ export const setRows = (payload) => ({ type: "SET_ROWS", payload });
 export const setColumns = (payload) => ({ type: "SET_COLUMNS", payload });
 export const setCells = (payload) => ({ type: "SET_CELLS", payload });
 
-export const store = createStore(reducer);
+export const store = createStore(reducer, composeWithDevTools());

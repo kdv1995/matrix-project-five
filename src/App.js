@@ -4,7 +4,7 @@ import s from "./App.module.scss";
 import Button from "./components/UI/Button";
 import Input from "./components/UI/Input";
 import CreateTable from "./CreateTable";
-import { setCells, setColumns, setRows } from "./store/store";
+import { setRows, setColumns, setCells } from "./store/store";
 
 const App = () => {
   const [rows, setRows] = useState(0);
