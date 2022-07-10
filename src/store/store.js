@@ -6,21 +6,24 @@ const initialState = {
   cells: 0,
 };
 
+const GET_ROWS = "GET_ROWS";
+const GET_COLUMNS = "GET_COLUMNS";
+const GET_CELLS = "GET_CELLS";
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_ROWS":
+    case GET_ROWS:
       return { ...state, rows: action.payload };
-    case "SET_COLUMNS":
+    case GET_COLUMNS:
       return { ...state, columns: action.payload };
-    case "SET_CELLS":
+    case GET_CELLS:
       return { ...state, cells: action.payload };
     default:
       return state;
   }
 };
 
-export const setRows = (payload) => ({ type: "SET_ROWS", payload });
-export const setColumns = (payload) => ({ type: "SET_COLUMNS", payload });
-export const setCells = (payload) => ({ type: "SET_CELLS", payload });
+export const getRows = (payload) => ({ type: GET_ROWS, payload });
+export const getColumns = (payload) => ({ type: GET_COLUMNS, payload });
+export const getCells = (payload) => ({ type: GET_CELLS, payload });
 
 export const store = createStore(reducer, composeWithDevTools());

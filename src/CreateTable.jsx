@@ -3,16 +3,13 @@ import { useSelector } from "react-redux";
 
 const CreateTable = () => {
   const rows = useSelector((state) => state.rows);
-  console.log(rows);
   const columns = useSelector((state) => state.columns);
-  console.log(columns);
-  const cells = useSelector((state) => state.cells);
-  console.log(cells);
+  // const cells = useSelector((state) => state.cells);
 
   let matrix = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < rows; i++) {
     matrix[i] = [];
-    for (let j = 0; j < 3; j++) {
+    for (let j = 0; j < columns; j++) {
       matrix[i][j] = Math.floor(Math.random() * (999 - 100 + 1) + 100);
     }
   }
@@ -26,7 +23,7 @@ const CreateTable = () => {
     >
       {matrix.map((row) => (
         <div>
-          {row.map((cell) => (
+          {row.map((columns) => (
             <div
               style={{
                 padding: 15,
@@ -36,16 +33,11 @@ const CreateTable = () => {
                 border: "2px solid black",
               }}
             >
-              {cell}
+              {columns}
             </div>
           ))}
         </div>
       ))}
-      <span>
-        {matrix.reduce((initial, current) =>
-          current.reduce((start, accum) => start + accum)
-        )}
-      </span>
     </div>
   );
 };
