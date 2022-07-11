@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./Input.module.scss";
+import s from "../Input/Input.module.scss";
 const Input = ({ title, value, onChange }) => {
   return (
     <>

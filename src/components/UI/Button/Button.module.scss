@@ -1,0 +1,17 @@
+.CreateMatrix {
+  display: flex;
+  justify-content: center;
+  max-width: 200px;
+  margin: 0 auto;
+  margin-top: 25px;
+  padding: 15px 30px;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: #000;
+  transition: linear 0.1s;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    color: rgb(200, 255, 0);
+  }
+}

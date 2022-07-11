@@ -1,0 +1,25 @@
+.CreateTable {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.CreateTableContainer {
+  padding: 45px 128px;
+  display: flex;
+  flex-direction: column;
+  background: rgb(39, 165, 157);
+}
+.RowNumbers {
+  text-align: center;
+}
+.Value {
+  padding: 15px;
+  margin: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid white;
+  color: yellow;
+  border-radius: 5px;
+}
