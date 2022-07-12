@@ -1,48 +1,23 @@
 .CreateTable {
-  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.CreateTableContainer {
-  padding: 45px 128px;
-  background: rgb(39, 165, 157);
-}
-
-.RowIndex {
-  display: flex;
-  align-items: center;
-  color: rgb(255, 255, 255);
+.ColumnsName {
   text-align: center;
 }
-.ColomnIndex {
-  display: flex;
-  align-items: center;
-  color: rgb(255, 255, 255);
+.ColumnsAverage {
   text-align: center;
 }
-.CellValue {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  margin: 15px;
-  text-align: center;
-  cursor: pointer;
-  border: 2px solid white;
-  color: yellow;
+.TableData {
+  padding: 20px;
   border-radius: 5px;
+  background: rgb(224, 224, 223);
 }
 .RowSum {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  margin: 15px;
-  text-align: center;
-  cursor: pointer;
-  border: 2px solid white;
-  color: yellow;
+  padding: 20px;
   border-radius: 5px;
+  background: rgb(250, 149, 54);
 }
 .ColumnAverage {
 }

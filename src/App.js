@@ -9,7 +9,7 @@ const App = () => {
       <div className={s.AppContainer}>
         <Routes>
           <Route path="createtable" element={<CreateTable />} />
-          <Route path="matrix" element={<Matrix />} />
+          <Route path="/matrix" element={<Matrix />} />
         </Routes>
       </div>
     </div>

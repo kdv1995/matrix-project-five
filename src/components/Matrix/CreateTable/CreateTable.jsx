@@ -1,57 +1,52 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import s from "./CreateTable.module.scss";
+
 import Button from "../../UI/Button/Button";
 import Heading from "../../UI/Heading/Heading";
-const CreateTable = () => {
-  const rows = useSelector((state) => state.rows);
-  const columns = useSelector((state) => state.columns);
-  const cells = useSelector((state) => state.cells);
-  const navigate = useNavigate();
+import s from "./CreateTable.module.scss";
 
-  let matrix = [];
-  for (let i = 0; i < rows; i++) {
-    matrix[i] = [];
-    for (let j = 0; j < columns; j++) {
-      matrix[i][j] = Math.floor(Math.random() * (999 - 100 + 1) + 100);
-    }
-  }
+import { useGenerateMatrix } from "../../../functions/useGenerateMatrix";
+import { useColumnsIndices } from "../../../functions/useColumnsIndices";
+import { useColumnsAverage } from "../../../functions/useColumnsAverage";
+
+const CreateTable = () => {
+  const navigate = useNavigate();
+  const matrix = useGenerateMatrix();
+  const columnsIndices = useColumnsIndices();
+  const columnsAverage = useColumnsAverage();
   return (
-    <div className={s.CreateTable}>
+    <>
       <Heading title="Matrix" />
-      <div className={s.CreateTableContainer}>
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          {matrix.map((_, index) => (
-            <span>{index + 1}</span>
-          ))}
-        </div>
-        <div>
+      <table>
+        <thead>
+          <tr className={s.ColumnsName}>
+            {columnsIndices.map((x) => (
+              <td>{x}</td>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
           {matrix.map((row, rowIndex) => (
-            <div style={{ display: "flex" }}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {rowIndex + 1}
-              </div>
-              {row.map((column) => (
-                <>
-                  <div>
-                    <div className={s.CellValue}>{column}</div>
-                  </div>
-                </>
+            <tr className={s.TableRow} key={rowIndex}>
+              <td>{rowIndex + 1}</td>
+              {row.map((item) => (
+                <td className={s.TableData} key={item}>
+                  {item}
+                </td>
               ))}
-              <div
-                className={s.RowSum}
-                style={{ display: "flex", alignItems: "center" }}
-              >
-                {row.reduce((a, b) => a + b)}
-              </div>
-            </div>
+              <td className={s.RowSum}>{row.reduce((a, b) => a + b)}</td>
+            </tr>
           ))}
-          <div>
-            {matrix.reduce((a, b) => a.map((x, i) => (x + b[i]) / rows.length))}
-          </div>
-        </div>
-      </div>
+        </tbody>
+        <thead>
+          <tr className={s.ColumnsAverage}>
+            {columnsAverage.map((x) => (
+              <td>{x}</td>
+            ))}
+            <td>res</td>
+          </tr>
+        </thead>
+      </table>
       <div>
         <Button
           onClick={() => {
@@ -60,7 +55,7 @@ const CreateTable = () => {
           title="Set another data"
         />
       </div>
-    </div>
+    </>
   );
 };
 

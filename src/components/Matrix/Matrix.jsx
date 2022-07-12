@@ -5,17 +5,19 @@ import { getCells, getColumns, getRows } from "../../store/store";
 import Button from "../UI/Button/Button";
 import Heading from "../UI/Heading/Heading";
 import Input from "../UI/Input/Input";
+import s from "../UI/Input/Input.module.scss";
 const Matrix = () => {
   const [rows, setRows] = useState(0);
   const [columns, setColumns] = useState(0);
   const [cells, setCells] = useState(0);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   dispatch(getCells(cells));
   dispatch(getRows(rows));
   dispatch(getColumns(columns));
+
   return (
     <>
       <Heading title="Matrix builder" />
@@ -24,6 +26,7 @@ const Matrix = () => {
           title="Enter the number of rows"
           value={rows}
           onChange={(event) => setRows(event.target.value)}
+          className={s.RowsNaming}
         />
       </div>
       <div>
@@ -31,6 +34,7 @@ const Matrix = () => {
           title="Enter the number of columns"
           value={columns}
           onChange={(event) => setColumns(event.target.value)}
+          className={s.ColumnsNaming}
         />
       </div>
       <div>
@@ -38,6 +42,7 @@ const Matrix = () => {
           title="Enter the number of cells"
           value={cells}
           onChange={(event) => setCells(event.target.value)}
+          className={s.CellsNaming}
         />
       </div>
       <div>
