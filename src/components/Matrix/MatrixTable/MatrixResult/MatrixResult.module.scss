@@ -22,6 +22,7 @@
   background: rgb(227, 150, 18);
 }
 .TableColumnAverage {
+  text-align: center;
   font-weight: bold;
   &:not(:first-child) {
     text-align: center;

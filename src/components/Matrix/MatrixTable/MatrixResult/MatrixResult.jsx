@@ -1,25 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
+
+import { useColumnsIndices } from "../../../../functions/useColumnsIndices";
+import { useCreateMatrix } from "../../../../functions/useCreateMatrix";
+
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  const rows = useSelector((state) => state.rows);
   const columns = useSelector((state) => state.columns);
-  const cells = useSelector((state) => state.cells);
-  const matrix = [];
-  for (let i = 0; i < rows; i++) {
-    matrix[i] = [];
-    for (let j = 0; j < columns; j++) {
-      matrix[i][j] = Math.floor(Math.random() * (999 - 100 + 1) + 100);
-    }
-  }
-  const columnsIndices = () => {
-    const arr = new Array(matrix.length).fill(0).map((_, index) => index + 1);
-    arr.unshift("№");
-    arr.push("Sum");
-    return arr;
-  };
-
+  // const cells = useSelector((state) => state.cells);
+  const matrix = useCreateMatrix();
+  const columnsIndices = useColumnsIndices();
   const columnsAverage = () => {
     const res = [];
     for (let i = 0; i < columns; i++) {
@@ -35,12 +26,11 @@ const MatrixResult = () => {
     average.unshift("Avg");
     return average;
   };
-
   return (
     <table>
       <thead>
         <tr className={s.TableColumnIndices}>
-          {columnsIndices().map((item) => (
+          {columnsIndices.map((item) => (
             <td>{item}</td>
           ))}
         </tr>
@@ -61,7 +51,7 @@ const MatrixResult = () => {
           {columnsAverage().map((item) => (
             <td className={s.TableColumnAverage}>{item}</td>
           ))}
-          <td>{columnsAverage().map((elem, index) => elem[index - 1])}</td>
+          {/* <td>{columnsAverage.map((elem, index) => elem[index - 1])}</td> */}
         </tr>
       </tbody>
     </table>
