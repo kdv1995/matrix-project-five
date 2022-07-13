@@ -3,17 +3,18 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../../UI/Button/Button";
 import Heading from "../../UI/Heading/Heading";
-import Table from "./Table/Table";
+import MatrixResult from "./MatrixResult/MatrixResult";
 
-const CreateTable = () => {
+const MatrixTable = () => {
   const navigate = useNavigate();
   return (
     <>
       <Heading title="Matrix" />
-      <Table />
+      <Button title="Add a row" />
+      <MatrixResult />
       <Button
         onClick={() => {
-          navigate("/matrix");
+          navigate("creatematrix");
         }}
         title="Set another data"
       />
@@ -21,4 +22,4 @@ const CreateTable = () => {
   );
 };
 
-export default CreateTable;
+export default MatrixTable;

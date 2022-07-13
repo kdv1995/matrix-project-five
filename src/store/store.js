@@ -4,6 +4,8 @@ const initialState = {
   rows: 0,
   columns: 0,
   cells: 0,
+  columnsIndices: [],
+  nearestCells: [],
 };
 
 const GET_ROWS = "GET_ROWS";

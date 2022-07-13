@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getCells, getColumns, getRows } from "../../store/store";
-import Button from "../UI/Button/Button";
-import Heading from "../UI/Heading/Heading";
-import Input from "../UI/Input/Input";
 import s from "../UI/Input/Input.module.scss";
-const Matrix = () => {
+
+import Heading from "../UI/Heading/Heading";
+
+import Button from "../UI/Button/Button";
+import Input from "../UI/Input/Input";
+const CreateMatrix = () => {
   const [rows, setRows] = useState(0);
   const [columns, setColumns] = useState(0);
   const [cells, setCells] = useState(0);
@@ -49,7 +51,7 @@ const Matrix = () => {
         <Button
           title="Create a matrix"
           onClick={() => {
-            navigate("/createtable");
+            navigate("matrixtable");
           }}
         />
       </div>
@@ -57,4 +59,4 @@ const Matrix = () => {
   );
 };
 
-export default Matrix;
+export default CreateMatrix;

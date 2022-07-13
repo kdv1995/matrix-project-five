@@ -1,15 +1,18 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import s from "./App.module.scss";
-import CreateTable from "./components/Matrix/CreateTable/CreateTable";
-import Matrix from "./components/Matrix/Matrix";
+
+import CreateMatrix from "./components/Matrix/CreateMatrix";
+
+import MatrixTable from "./components/Matrix/MatrixTable/MatrixTable";
+
 const App = () => {
   return (
     <div className={s.App}>
       <div className={s.AppContainer}>
+        <CreateMatrix />
         <Routes>
-          <Route path="createtable" element={<CreateTable />} />
-          <Route path="/matrix" element={<Matrix />} />
+          <Route path="matrixtable" element={<MatrixTable />} />
         </Routes>
       </div>
     </div>
