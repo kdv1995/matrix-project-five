@@ -1,27 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
-// import { useColumnsIndices } from "../../../../functions/useColumnsIndices";
-// import { useCreateMatrix } from "../../../../functions/useCreateMatrix";
-
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
   const matrix = useSelector((state) => state.matrix);
   console.log(matrix);
-  //   const columns = useSelector((state) => state.columns);
-  //   console.log(columns);
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);
   const columnsAverage = matrix
     .reduce((a, b) => a.map((x, i) => x + b[i]))
     .map((item) => Math.round(item / matrix.length));
-
-  
-
-    const columnsAverageSum = columnsAverage.reduce((a, b) => a + b);
-
+  const columnsAverageSum = columnsAverage.reduce((a, b) => a + b);
   return (
     <table>
       <thead>
