@@ -1,31 +1,40 @@
 import { legacy_createStore as createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+
 const initialState = {
   rows: 0,
   columns: 0,
   cells: 0,
-  columnsIndices: [],
-  nearestCells: [],
+  matrix: [],
 };
 
-const GET_ROWS = "GET_ROWS";
-const GET_COLUMNS = "GET_COLUMNS";
-const GET_CELLS = "GET_CELLS";
+const SET_ROWS = "SET_ROWS";
+const SET_COLUMNS = "SET_COLUMNS";
+const SET_CELLS = "SET_CELLS";
+const SET_MATRIX = "SET_MATRIX";
+// const INCREMENTED_CELLS = "INCREMENTED_CELLS";
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ROWS:
+    case SET_ROWS:
       return { ...state, rows: action.payload };
-    case GET_COLUMNS:
+    case SET_COLUMNS:
       return { ...state, columns: action.payload };
-    case GET_CELLS:
+    case SET_CELLS:
       return { ...state, cells: action.payload };
+    case SET_MATRIX:
+      return { ...state, matrix: action.payload };
+    // case INCREMENTED_CELLS:
+    //   return { ...state, matrix: [action.payload + 1] };
     default:
       return state;
   }
 };
 
-export const getRows = (payload) => ({ type: GET_ROWS, payload });
-export const getColumns = (payload) => ({ type: GET_COLUMNS, payload });
-export const getCells = (payload) => ({ type: GET_CELLS, payload });
-
-export const store = createStore(reducer, composeWithDevTools());
+export const setRowsDispatch = (payload) => ({ type: SET_ROWS, payload });
+export const setColumnsDispatch = (payload) => ({ type: SET_COLUMNS, payload });
+export const setCellsDispatch = (payload) => ({ type: SET_CELLS, payload });
+export const setMatrixDispatch = (payload) => ({ type: SET_MATRIX, payload });
+// export const setIncrementedCells = (payload) => ({
+//   type: INCREMENTED_CELLS,
+//   payload,
+// });
+export const store = createStore(reducer);

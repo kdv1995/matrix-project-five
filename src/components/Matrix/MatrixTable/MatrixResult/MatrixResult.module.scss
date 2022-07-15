@@ -12,6 +12,7 @@
   margin: 10px;
   border-radius: 5px;
   background: rgb(103, 218, 249);
+  cursor: pointer;
 }
 .TableRowSum {
   font-weight: bold;
@@ -20,6 +21,11 @@
   margin: 10px;
   border-radius: 5px;
   background: rgb(227, 150, 18);
+  cursor: pointer;
+}
+.TableAverageName {
+  text-align: center;
+  font-weight: bold;
 }
 .TableColumnAverage {
   text-align: center;
@@ -30,5 +36,15 @@
     margin: 10px;
     border-radius: 5px;
     background: rgb(227, 150, 18);
+    cursor: pointer;
   }
+}
+.TableColumnAverageSum {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  background: rgb(227, 150, 18);
+  cursor: pointer;
 }

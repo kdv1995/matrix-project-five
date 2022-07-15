@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getCells, getColumns, getRows } from "../../store/store";
-import s from "../UI/Input/Input.module.scss";
 
 import Heading from "../UI/Heading/Heading";
-
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
+
+import s from "../UI/Input/Input.module.scss";
+import {
+  setCellsDispatch,
+  setColumnsDispatch,
+  setRowsDispatch,
+} from "../../store/store";
+
 const CreateMatrix = () => {
   const [rows, setRows] = useState(0);
   const [columns, setColumns] = useState(0);
@@ -15,11 +20,10 @@ const CreateMatrix = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  dispatch(getCells(cells));
-  dispatch(getRows(rows));
-  dispatch(getColumns(columns));
-
+  
+  dispatch(setCellsDispatch(cells));
+  dispatch(setRowsDispatch(rows));
+  dispatch(setColumnsDispatch(columns));
   return (
     <>
       <Heading title="Matrix builder" />
