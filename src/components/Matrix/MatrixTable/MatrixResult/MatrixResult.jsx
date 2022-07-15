@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
@@ -8,10 +8,13 @@ const MatrixResult = () => {
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);
+
   const columnsAverage = matrix
-    .reduce((a, b) => a.map((x, i) => x + b[i]))
+    .reduce((a, b) => a.map((x, i) => x + b[i].amount))
     .map((item) => Math.round(item / matrix.length));
-  const columnsAverageSum = columnsAverage.reduce((a, b) => a + b);
+    console.log(columnsAverage)
+  const columnsAverageSum = columnsAverage.reduce((a, b) => a + b.amount,0);
+
   return (
     <table>
       <thead>
@@ -27,10 +30,10 @@ const MatrixResult = () => {
         {matrix.map((row, rowIndex) => (
           <tr>
             <td className={s.TableRowIndices}>{rowIndex + 1}</td>
-            {row.map((item) => (
-              <td className={s.TableRowData}>{item}</td>
+            {row.map((item, index) => (
+              <td className={s.TableRowData}>{item.amount}</td>
             ))}
-            <td className={s.TableRowSum}>{row.reduce((a, b) => a + b)}</td>
+            <td className={s.TableRowSum}>{row.reduce((a, b) => a + b.amount,0)}</td>
           </tr>
         ))}
         <tr>

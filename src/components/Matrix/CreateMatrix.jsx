@@ -1,27 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Heading from "../UI/Heading/Heading";
 import Button from "../UI/Button/Button";
+import Heading from "../UI/Heading/Heading";
 import Input from "../UI/Input/Input";
 
-import s from "../UI/Input/Input.module.scss";
 import { useDispatch } from "react-redux";
+import s from "../UI/Input/Input.module.scss";
 
-// import { setMatrixDispatch } from "../../store/store";
-// import MatrixResult from "./MatrixTable/MatrixResult/MatrixResult";
-import { setMatrixDispatch } from "../../store/store";
-// import { useNavigate } from "react-router-dom";
-// import MatrixResult from "./MatrixTable/MatrixResult/MatrixResult";
-// import MatrixTable from "./MatrixTable/MatrixTable";
+import { setMatrix } from "../../store/store";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [rows, setRows] = useState(0);
-  // const [columns, setColumns] = useState(0);
-  // const [cells, setCells] = useState(0);
-
   const [initialData, setInitialData] = useState({
     rows: 0,
     columns: 0,
@@ -33,19 +24,16 @@ const CreateMatrix = () => {
       [key]: event.target.value,
     }));
   };
-
   const matrix = [];
   for (let i = 0; i < initialData.rows; i++) {
     matrix[i] = [];
     for (let j = 0; j < initialData.columns; j++) {
-      matrix[i][j] = Math.floor(Math.random() * (999 - 100 + 1) + 100);
+      matrix[i][j] = {
+        id: `${j}`,
+        amount: Math.floor(Math.random() * (999 - 100 + 1) + 100),
+      };
     }
   }
-  console.log(matrix);
-
-  const sendData = () => {
-    dispatch(setMatrixDispatch(matrix));
-  };
   return (
     <>
       <Heading title="Matrix builder" />
@@ -79,7 +67,7 @@ const CreateMatrix = () => {
       <div>
         <Button
           title="Create a matrix"
-          onClick={() => dispatch(setMatrixDispatch(matrix), navigate('matrixtable'))}
+          onClick={() => dispatch(setMatrix(matrix), navigate("matrixtable"))}
         />
       </div>
     </>
