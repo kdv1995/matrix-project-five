@@ -30,7 +30,7 @@ const CreateMatrix = () => {
     for (let j = 0; j < initialData.columns; j++) {
       matrix[i][j] = {
         id: `${j}`,
-        amount: Math.floor(Math.random() * (999 - 100 + 1) + 100),
+        amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
       };
     }
   }
