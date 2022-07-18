@@ -1,11 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setIncrement } from "../../../../store/store";
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const matrix = useSelector((state) => state.matrix);
-  console.log(matrix);
+
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);
@@ -34,7 +35,13 @@ const MatrixResult = () => {
           <tr>
             <td className={s.TableRowIndices}>{rowIndex + 1}</td>
             {row.map((item, index) => (
-              <td className={s.TableRowData}>{item.amount}</td>
+              <td
+                onClick={() => dispatch(setIncrement(item.id))}
+                key={item.id}
+                className={s.TableRowData}
+              >
+                {item.amount}
+              </td>
             ))}
             <td className={s.TableRowSum}>
               {row.reduce((a, b) => a + b.amount, 0)}

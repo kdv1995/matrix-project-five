@@ -11,10 +11,10 @@ const App = () => {
     <div className={s.App}>
       <div className={s.AppContainer}>
         <CreateMatrix />
-        <Routes>
-          <Route path="matrixtable" element={<MatrixTable />} />
-        </Routes>
       </div>
+      <Routes>
+        <Route path="matrixtable" element={<MatrixTable />} />
+      </Routes>
     </div>
   );
 };
