@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIncrement } from "../../../../store/store";
 import s from "./MatrixResult.module.scss";
@@ -6,7 +6,18 @@ import s from "./MatrixResult.module.scss";
 const MatrixResult = () => {
   const dispatch = useDispatch();
   const matrix = useSelector((state) => state.matrix);
+  console.log(matrix);
+  const [value, setValue] = useState("");
+  const handleMouseOver = (event) => {
+    setValue(event.target.dataset);
+  };
+  const res = matrix
+    .flat()
+    .filter((x) => x.id !== value.id)
+    .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
+    .sort((a, b) => a.amount - b.amount);
 
+  console.log(res);
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);
@@ -37,8 +48,11 @@ const MatrixResult = () => {
             {row.map((item, index) => (
               <td
                 onClick={() => dispatch(setIncrement(item.id))}
+                onMouseEnter={handleMouseOver}
                 key={item.id}
                 className={s.TableRowData}
+                data-id={item.id}
+                data-amount={item.amount}
               >
                 {item.amount}
               </td>
