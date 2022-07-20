@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setIncrement } from "../../../../store/store";
+import { setClosestCellsHovered, setIncrement } from "../../../../store/store";
 
 import s from "./MatrixResult.module.scss";
 
@@ -11,16 +11,47 @@ const MatrixResult = () => {
   console.log(matrix);
   const closestCells = useSelector((state) => state.closestCells);
   const [value, setValue] = useState("");
+
+  //Handle mouse over
+
   const handleMouseOver = (event) => {
     setValue(event.target.dataset);
-  };
+    // Get closest cells result
 
-  const closestCellsResult = matrix
-    .flat()
-    .filter((x) => x.id !== value.id)
-    .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
-    .sort((a, b) => a.amount - b.amount)
-    .slice(0, closestCells);
+    const closestCellsResult = matrix
+      .flat()
+      .filter((x) => x.id !== value.id)
+      .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
+      .sort((a, b) => a.amount - b.amount)
+      .slice(0, closestCells);
+
+    console.log(closestCellsResult);
+
+    // initialMatrix
+
+    const initialMatrix = matrix
+      .flat()
+      .map((x) => closestCellsResult.map((c) => c.id).includes(x.id));
+    console.log(initialMatrix);
+    // Get Indices
+
+    const arr = [];
+    const getIndices = initialMatrix.forEach((item, index) =>
+      item === true ? arr.push(index) : null
+    );
+    console.log(arr);
+
+    // Hovered value
+    const hoveredValue = matrix
+      .flat()
+      .map((item, index) =>
+        arr.includes(index) ? (item.closest = true) : (item.closest = false)
+      );
+    console.log(hoveredValue);
+    // dispatch(setClosestCellsHovered(hoveredValue));
+  };
+  // const closesties = useSelector((state) => state.closest);
+  // console.log(closesties);
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);
