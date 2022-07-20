@@ -1,23 +1,26 @@
 import React, { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setIncrement } from "../../../../store/store";
+
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
   const dispatch = useDispatch();
   const matrix = useSelector((state) => state.matrix);
   console.log(matrix);
+  const closestCells = useSelector((state) => state.closestCells);
   const [value, setValue] = useState("");
   const handleMouseOver = (event) => {
     setValue(event.target.dataset);
   };
-  const res = matrix
+
+  const closestCellsResult = matrix
     .flat()
     .filter((x) => x.id !== value.id)
     .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
-    .sort((a, b) => a.amount - b.amount);
-
-  console.log(res);
+    .sort((a, b) => a.amount - b.amount)
+    .slice(0, closestCells);
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);

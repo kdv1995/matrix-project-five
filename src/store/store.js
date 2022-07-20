@@ -3,11 +3,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const initialState = {
   matrix: [],
+  closestCells: 0,
 };
 
 const SET_MATRIX = "SET_MATRIX";
 const SET_INCREMENT = "SET_INCREMENT";
-
+const SET_CLOSEST_CELLS = "SET_CLOSEST_CELLS";
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_MATRIX:
@@ -21,6 +22,11 @@ const reducer = (state = initialState, action) => {
           )
         ),
       };
+    case SET_CLOSEST_CELLS:
+      return {
+        ...state,
+        closestCells: action.payload,
+      };
     default:
       return state;
   }
@@ -28,4 +34,8 @@ const reducer = (state = initialState, action) => {
 
 export const setMatrix = (payload) => ({ type: SET_MATRIX, payload });
 export const setIncrement = (payload) => ({ type: SET_INCREMENT, payload });
+export const setClosesCells = (payload) => ({
+  type: SET_CLOSEST_CELLS,
+  payload,
+});
 export const store = createStore(reducer, composeWithDevTools());

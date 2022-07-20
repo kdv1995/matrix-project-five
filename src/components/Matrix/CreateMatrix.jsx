@@ -8,7 +8,7 @@ import Input from "../UI/Input/Input";
 import { useDispatch } from "react-redux";
 import s from "../UI/Input/Input.module.scss";
 
-import { setMatrix } from "../../store/store";
+import { setClosesCells, setMatrix } from "../../store/store";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,8 @@ const CreateMatrix = () => {
     columns: 0,
     cells: 0,
   });
+  const closestCells = initialData.cells;
+  dispatch(setClosesCells(closestCells));
   const onHandleChange = (event, key) => {
     setInitialData((prevState) => ({
       ...prevState,
@@ -31,6 +33,7 @@ const CreateMatrix = () => {
       matrix[i][j] = {
         id: `${i}_${j}`,
         amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
+        closest: false,
       };
     }
   }
