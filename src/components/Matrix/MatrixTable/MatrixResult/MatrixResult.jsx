@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setIncrement } from "../../../../store/store";
+import { setClosestCellsHovered, setIncrement } from "../../../../store/store";
 
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
   const [value, setValue] = useState("");
-  const [average, setAverage] = useState("");
+  console.log(value);
+  // const [average, setAverage] = useState("");
   const matrix = useSelector((state) => state.matrix);
   const closestCells = useSelector((state) => state.closestCells);
   const dispatch = useDispatch();
@@ -22,35 +23,44 @@ const MatrixResult = () => {
     Math.round(item / matrix.length)
   );
   const columnsAverageSum = columnsAverageFinal.reduce((a, b) => a + b);
+
   const handleClosestCells = (event) => {
     setValue(event.target.dataset);
-  };
-  // const
-  const closestCellsResult = matrix
-    .flat()
-    .filter((x) => x.id !== value.id)
-    .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
-    .sort((a, b) => a.amount - b.amount)
-    .slice(0, closestCells);
-  const initialMatrix = matrix
-    .flat()
-    .map((x) => closestCellsResult.map((c) => c.id).includes(x.id));
-  const arr = [];
-  const getIndices = initialMatrix.forEach((item, index) =>
-    item === true ? arr.push(index) : null
-  );
-  const hoveredValue = matrix
-    .flat()
-    .map((item, index) =>
-      arr.includes(index) ? (item.closest = true) : (item.closest = false)
+    const closestCellsResult = matrix
+      .flat()
+      .filter((x) => x.id !== value.id)
+      .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
+      .sort((a, b) => a.amount - b.amount)
+      .slice(0, closestCells);
+    console.log(closestCellsResult);
+    const initialMatrix = matrix
+      .flat()
+      .map((x) => closestCellsResult.map((c) => c.id).includes(x.id));
+    console.log(initialMatrix);
+    const arr = [];
+    const setIndicesOfClosest = initialMatrix.forEach((item, index) =>
+      item === true ? arr.push(index) : null
     );
-  const handleSumDeposit = (event, id) => {
-    setAverage(event.target.innerText);
-    const findRow = matrix.map((x) => x)[id];
-    const findRowPercentage = findRow.map((x) => (x.amount / average) * 100);
-    console.log(findRow);
-    console.log(findRowPercentage);
+    console.log(arr);
+    // const hoveredValue = matrix.
+    // dispatch(setClosestCellsHovered(hoveredValue));
   };
+  const handleClosestClear = () => {
+    matrix.flat().map((item) => ({ ...item, closest: false }));
+  };
+
+  // const initialMatrix = matrix
+  //   .flat()
+  //   .map((x) => closestCellsResult.map((c) => c.id).includes(x.id));
+  // console.log(initialMatrix);
+
+  // const handleSumDeposit = (event, id) => {
+  //   setAverage(event.target.innerText);
+  //   const findRow = matrix.map((x) => x)[id];
+  //   const findRowPercentage = findRow.map((x) => (x.amount / average) * 100);
+  //   console.log(findRow);
+  //   console.log(findRowPercentage);
+  // };
 
   return (
     <table>
@@ -71,7 +81,7 @@ const MatrixResult = () => {
               <td
                 onClick={() => dispatch(setIncrement(item.id))}
                 onMouseEnter={handleClosestCells}
-                onMouseLeave={(e) => e.preventDefault()}
+                onMouseLeave={handleClosestClear}
                 key={index}
                 className={s.TableRowData}
                 data-id={item.id}
@@ -82,7 +92,7 @@ const MatrixResult = () => {
               </td>
             ))}
             <td
-              onMouseEnter={(event) => handleSumDeposit(event, rowIndex)}
+              // onMouseEnter={(event) => handleSumDeposit(event, rowIndex)}
               className={s.TableRowSum}
             >
               {row.reduce((a, b) => a + b.amount, 0)}
