@@ -28,6 +28,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         closestCells: action.payload,
       };
+    // case SET_CLOSEST_CELLS_HOVERED:
+    //   return {};
     default:
       return state;
   }

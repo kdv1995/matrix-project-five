@@ -37,6 +37,7 @@ const CreateMatrix = () => {
         id: `${i}_${j}`,
         amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
         closest: false,
+        deposit: 0,
       };
     }
   }

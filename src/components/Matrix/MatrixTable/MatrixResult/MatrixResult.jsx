@@ -6,41 +6,11 @@ import { setIncrement } from "../../../../store/store";
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  const dispatch = useDispatch();
-  const matrix = useSelector((state) => state.matrix);
-  console.log(matrix);
-  const closestCells = useSelector((state) => state.closestCells);
   const [value, setValue] = useState("");
-
-  //Handle mouse over
-
-  const handleMouseOver = (event) => {
-    setValue(event.target.dataset);
-  };
-  // Get closest cells result
-
-  const closestCellsResult = matrix
-    .flat()
-    .filter((x) => x.id !== value.id)
-    .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
-    .sort((a, b) => a.amount - b.amount)
-    .slice(0, closestCells);
-
-  const initialMatrix = matrix
-    .flat()
-    .map((x) => closestCellsResult.map((c) => c.id).includes(x.id));
-
-  const arr = [];
-  const getIndices = initialMatrix.forEach((item, index) =>
-    item === true ? arr.push(index) : null
-  );
-
-  const hoveredValue = matrix
-    .flat()
-    .map((item, index) =>
-      arr.includes(index) ? (item.closest = true) : (item.closest = false)
-    );
-
+  const [average, setAverage] = useState("");
+  const matrix = useSelector((state) => state.matrix);
+  const closestCells = useSelector((state) => state.closestCells);
+  const dispatch = useDispatch();
   const columnsIndices = new Array(matrix.length)
     .fill(0)
     .map((_, index) => index + 1);
@@ -52,6 +22,35 @@ const MatrixResult = () => {
     Math.round(item / matrix.length)
   );
   const columnsAverageSum = columnsAverageFinal.reduce((a, b) => a + b);
+  const handleClosestCells = (event) => {
+    setValue(event.target.dataset);
+  };
+  // const
+  const closestCellsResult = matrix
+    .flat()
+    .filter((x) => x.id !== value.id)
+    .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
+    .sort((a, b) => a.amount - b.amount)
+    .slice(0, closestCells);
+  const initialMatrix = matrix
+    .flat()
+    .map((x) => closestCellsResult.map((c) => c.id).includes(x.id));
+  const arr = [];
+  const getIndices = initialMatrix.forEach((item, index) =>
+    item === true ? arr.push(index) : null
+  );
+  const hoveredValue = matrix
+    .flat()
+    .map((item, index) =>
+      arr.includes(index) ? (item.closest = true) : (item.closest = false)
+    );
+  const handleSumDeposit = (event, id) => {
+    setAverage(event.target.innerText);
+    const findRow = matrix.map((x) => x)[id];
+    const findRowPercentage = findRow.map((x) => (x.amount / average) * 100);
+    console.log(findRow);
+    console.log(findRowPercentage);
+  };
 
   return (
     <table>
@@ -66,22 +65,26 @@ const MatrixResult = () => {
       </thead>
       <tbody>
         {matrix.map((row, rowIndex) => (
-          <tr>
+          <tr key={rowIndex}>
             <td className={s.TableRowIndices}>{rowIndex + 1}</td>
             {row.map((item, index) => (
               <td
                 onClick={() => dispatch(setIncrement(item.id))}
-                onMouseEnter={handleMouseOver}
-                key={item.id}
+                onMouseEnter={handleClosestCells}
+                onMouseLeave={(e) => e.preventDefault()}
+                key={index}
                 className={s.TableRowData}
                 data-id={item.id}
                 data-amount={item.amount}
-                style={{ background: item.closest === true ? "red" : "" }}
+                style={{ background: !item.closest ? "" : "green" }}
               >
                 {item.amount}
               </td>
             ))}
-            <td className={s.TableRowSum}>
+            <td
+              onMouseEnter={(event) => handleSumDeposit(event, rowIndex)}
+              className={s.TableRowSum}
+            >
               {row.reduce((a, b) => a + b.amount, 0)}
             </td>
           </tr>
@@ -89,7 +92,9 @@ const MatrixResult = () => {
         <tr>
           <td className={s.TableAverageName}>Avg</td>
           {columnsAverageFinal.map((item, index) => (
-            <td className={s.TableColumnAverage}>{item}</td>
+            <td key={index} className={s.TableColumnAverage}>
+              {item}
+            </td>
           ))}
           <td className={s.TableColumnAverageSum}>{columnsAverageSum}</td>
         </tr>
