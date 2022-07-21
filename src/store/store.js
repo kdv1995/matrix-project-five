@@ -9,7 +9,7 @@ const initialState = {
 const SET_MATRIX = "SET_MATRIX";
 const SET_INCREMENT = "SET_INCREMENT";
 const SET_CLOSEST_CELLS = "SET_CLOSEST_CELLS";
-// const SET_CLOSEST_CELLS_HOVERED = "SET_CLOSEST_CELLS_HOVERED";
+const SET_CLOSEST_CELLS_HOVERED = "SET_CLOSEST_CELLS_HOVERED";
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -29,15 +29,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         closestCells: action.payload,
       };
-    // case SET_CLOSEST_CELLS_HOVERED:
-    //   return {
-    //     ...state,
-    //     matrix: state.matrix.map((item) =>
-    //       item.map((x) =>
-    //         x.closest === action.payload ? { ...x, closest: true } : x
-    //       )
-    //     ),
-    // };
+    case SET_CLOSEST_CELLS_HOVERED:
+      return {
+        matrix: state.matrix.map((item) =>
+          item.map((x) =>
+            x.id === action.payload.id
+              ? { ...x, closest: true }
+              : false
+          )
+        ),
+      };
     default:
       return state;
   }
@@ -49,9 +50,9 @@ export const setClosestCells = (payload) => ({
   type: SET_CLOSEST_CELLS,
   payload,
 });
-// export const setClosestCellsHovered = (payload) => ({
-//   type: setClosestCellsHovered,
-//   payload,
-// });
+export const setClosestCellsHovered = (payload) => ({
+  type: setClosestCellsHovered,
+  payload,
+});
 
 export const store = createStore(reducer, composeWithDevTools());
