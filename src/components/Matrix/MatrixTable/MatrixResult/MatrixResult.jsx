@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setClosestCellsHovered, setIncrement } from "../../../../store/store";
+import { setHoveredValue, setIncrement } from "../../../../store/store";
 
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  const [value, setValue] = useState("");
-  // console.log(value);
-  // const [average, setAverage] = useState("");
   const matrix = useSelector((state) => state.matrix);
   console.log(matrix);
   const closestCells = useSelector((state) => state.closestCells);
@@ -24,19 +21,21 @@ const MatrixResult = () => {
     Math.round(item / matrix.length)
   );
   const columnsAverageSum = columnsAverageFinal.reduce((a, b) => a + b);
+  const hoveredValue = useSelector((state) => state.hoveredValue);
+  const findTheClosest = matrix
+    .flat()
+    .filter((x) => x.id !== hoveredValue.id)
+    .map((item) => ({
+      id: item.id,
+      amount: Math.abs(hoveredValue.amount - item.amount),
+    }))
+    .sort((a, b) => a.amount - b.amount)
+    .slice(0, closestCells);
 
-  const handleClosestCells = (event) => {
-    setValue(event.target.dataset);
-
-    const closestCellsResult = matrix
-      .flat()
-      .filter((x) => x.id !== value.id)
-      .map((y) => ({ id: y.id, amount: Math.abs(value.amount - y.amount) }))
-      .sort((a, b) => a.amount - b.amount)
-      .slice(0, closestCells);
-    console.log(closestCellsResult);
-    dispatch(setClosestCellsHovered(closestCellsResult));
-  };
+  // const findClosest = matrix.flat();
+  // const nextStep = findClosest.filter((elem) => elem.id !== value.id);
+  // console.log(nextStep);
+  // console.log(findClosest);
   // const handleSumDeposit = (event, id) => {
   //   setAverage(event.target.innerText);
   //   const findRow = matrix.map((x) => x)[id];
@@ -63,13 +62,14 @@ const MatrixResult = () => {
             {row.map((item, index) => (
               <td
                 onClick={() => dispatch(setIncrement(item.id))}
-                onMouseEnter={handleClosestCells}
-                // onMouseLeave={handleClosestClear}
+                onMouseEnter={() =>
+                  dispatch(
+                    setHoveredValue({ id: item.id, amount: item.amount })
+                  )
+                }
                 key={index}
                 className={s.TableRowData}
-                data-id={item.id}
-                data-amount={item.amount}
-                style={{ background: !item.closest ? "green" : "" }}
+                style={{ background: item.closest === true ? "red" : "" }}
               >
                 {item.amount}
               </td>
