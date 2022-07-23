@@ -1,11 +1,10 @@
 const initialState = {
   matrix: [],
-  closestCells: 0,
 };
 const SET_MATRIX = "SET_MATRIX";
 const SET_INCREMENT = "SET_INCREMENT";
 const SET_CLOSEST_VALUES = "SET_CLOSEST_VALUES";
-const SET_CLOSEST_CELLS = "SET_CLOSEST_CELLS";
+const SET_CLEAR_VALUES = "SET_CLEAR_VALUES";
 
 export const matrixReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -22,11 +21,7 @@ export const matrixReducer = (state = initialState, action) => {
           )
         ),
       };
-    case SET_CLOSEST_CELLS:
-      return {
-        ...state,
-        closestCells: action.payload,
-      };
+
     case SET_CLOSEST_VALUES:
       const { id, amount } = action.payload;
       const closestCellsResult = state.matrix
@@ -37,14 +32,25 @@ export const matrixReducer = (state = initialState, action) => {
           amount: Math.abs(amount - cell.amount),
         }))
         .sort((a, b) => a.amount - b.amount)
-        .slice(0, state.closestCells);
+        .slice(0, state.matrix[0][0].cutClosestCells);
+
       console.log(closestCellsResult);
       return {
         ...state,
         matrix: state.matrix.map((row) =>
           row.map((cell) => ({
             ...cell,
-            closest: closestCellsResult.map((x) => x.id === cell.id)[0],
+            closest: closestCellsResult.find((item) => item.id === cell.id),
+          }))
+        ),
+      };
+    case SET_CLEAR_VALUES:
+      return {
+        ...state,
+        matrix: state.matrix.map((row) =>
+          row.map((cell) => ({
+            ...cell,
+            closest: false,
           }))
         ),
       };
@@ -59,7 +65,7 @@ export const setClosestValues = (payload) => ({
   type: SET_CLOSEST_VALUES,
   payload,
 });
-export const setClosestCells = (payload) => ({
-  type: SET_CLOSEST_CELLS,
+export const setClearValues = (payload) => ({
+  type: SET_CLEAR_VALUES,
   payload,
 });
