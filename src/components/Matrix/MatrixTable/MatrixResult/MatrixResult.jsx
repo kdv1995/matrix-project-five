@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setHoveredValue, setIncrement } from "../../../../store/store";
+import {
+  setClosestValues,
+  setIncrement,
+} from "../../../../store/matrixReducer";
 
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  const matrix = useSelector((state) => state.matrix);
+  const matrix = useSelector((state) => state.matrix.matrix);
   console.log(matrix);
-  const closestCells = useSelector((state) => state.closestCells);
   const dispatch = useDispatch();
   const columnsIndices = new Array(matrix.length)
     .fill(0)
@@ -21,21 +23,13 @@ const MatrixResult = () => {
     Math.round(item / matrix.length)
   );
   const columnsAverageSum = columnsAverageFinal.reduce((a, b) => a + b);
-  const hoveredValue = useSelector((state) => state.hoveredValue);
-  const findTheClosest = matrix
-    .flat()
-    .filter((x) => x.id !== hoveredValue.id)
-    .map((item) => ({
-      id: item.id,
-      amount: Math.abs(hoveredValue.amount - item.amount),
-    }))
-    .sort((a, b) => a.amount - b.amount)
-    .slice(0, closestCells);
 
-  // const findClosest = matrix.flat();
-  // const nextStep = findClosest.filter((elem) => elem.id !== value.id);
-  // console.log(nextStep);
-  // console.log(findClosest);
+  const handleClosestValues = (item) => {
+    dispatch(setClosestValues(item));
+  };
+
+  // dispatch(setClosestValues(findClosestValues));
+  // console.log(findClosestValues);
   // const handleSumDeposit = (event, id) => {
   //   setAverage(event.target.innerText);
   //   const findRow = matrix.map((x) => x)[id];
@@ -62,11 +56,7 @@ const MatrixResult = () => {
             {row.map((item, index) => (
               <td
                 onClick={() => dispatch(setIncrement(item.id))}
-                onMouseEnter={() =>
-                  dispatch(
-                    setHoveredValue({ id: item.id, amount: item.amount })
-                  )
-                }
+                onMouseEnter={() => handleClosestValues(item)}
                 key={index}
                 className={s.TableRowData}
                 style={{ background: item.closest === true ? "red" : "" }}

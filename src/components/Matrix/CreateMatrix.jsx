@@ -8,7 +8,7 @@ import Input from "../UI/Input/Input";
 import { useDispatch } from "react-redux";
 import s from "../UI/Input/Input.module.scss";
 
-import { setClosestCells, setMatrix } from "../../store/store";
+import { setClosestCells, setMatrix } from "../../store/matrixReducer";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
