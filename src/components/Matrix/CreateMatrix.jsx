@@ -8,7 +8,7 @@ import Input from "../UI/Input/Input";
 import { useDispatch } from "react-redux";
 import s from "../UI/Input/Input.module.scss";
 
-import { setMatrix } from "../../store/matrixReducer";
+import { setMatrix, setNewRowData } from "../../store/matrixReducer";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,8 @@ const CreateMatrix = () => {
       [key]: event.target.value,
     }));
   };
-
+  const newRowData = initialData.rows;
+  dispatch(setNewRowData(newRowData));
   const matrix = [];
   for (let i = 0; i < initialData.rows; i++) {
     matrix[i] = [];

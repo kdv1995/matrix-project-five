@@ -11,7 +11,6 @@ const MatrixTable = () => {
   const navigate = useNavigate();
   return (
     <div className={s.MatrixContainer}>
-      <Button title="Add a row" />
       <MatrixResult />
       <Button title="Set another data" onClick={() => navigate("/")} />
     </div>
