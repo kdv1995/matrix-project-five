@@ -5,6 +5,7 @@ const SET_MATRIX = "SET_MATRIX";
 const SET_INCREMENT = "SET_INCREMENT";
 const SET_CLOSEST_VALUES = "SET_CLOSEST_VALUES";
 const SET_CLEAR_VALUES = "SET_CLEAR_VALUES";
+const SET_ROW_PERCENTAGE = "SET_ROW_PERCENTAGE";
 
 export const matrixReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -33,8 +34,6 @@ export const matrixReducer = (state = initialState, action) => {
         }))
         .sort((a, b) => a.amount - b.amount)
         .slice(0, state.matrix[0][0].cutClosestCells);
-
-      console.log(closestCellsResult);
       return {
         ...state,
         matrix: state.matrix.map((row) =>
@@ -54,6 +53,16 @@ export const matrixReducer = (state = initialState, action) => {
           }))
         ),
       };
+    case SET_ROW_PERCENTAGE:
+      console.log(action.payload);
+      const rowSum = action.payload.reduce((row, cell) => row + cell.amount, 0);
+      const findPercentage = action.payload.map((row) =>
+        Math.round((row.amount / rowSum) * 100)
+      );
+      console.log(findPercentage);
+      return {
+        ...state,
+      };
     default:
       return state;
   }
@@ -67,5 +76,9 @@ export const setClosestValues = (payload) => ({
 });
 export const setClearValues = (payload) => ({
   type: SET_CLEAR_VALUES,
+  payload,
+});
+export const setRowPercentage = (payload) => ({
+  type: SET_ROW_PERCENTAGE,
   payload,
 });

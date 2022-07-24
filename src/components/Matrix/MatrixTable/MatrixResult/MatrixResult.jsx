@@ -5,6 +5,7 @@ import {
   setClearValues,
   setClosestValues,
   setIncrement,
+  setRowPercentage,
 } from "../../../../store/matrixReducer";
 
 import s from "./MatrixResult.module.scss";
@@ -20,7 +21,9 @@ const MatrixResult = () => {
   const handleClearValues = (item) => {
     dispatch(setClearValues(item));
   };
-
+  const handleSumDeposit = (id) => {
+    dispatch(setRowPercentage(id));
+  };
   // dispatch(setClosestValues(findClosestValues));
   // console.log(findClosestValues);
   // const handleSumDeposit = (event, id) => {
@@ -58,7 +61,7 @@ const MatrixResult = () => {
               </td>
             ))}
             <td
-              // onMouseEnter={(event) => handleSumDeposit(event, rowIndex)}
+              onMouseEnter={(event) => handleSumDeposit(row, rowIndex)}
               className={s.TableRowSum}
             >
               {row.reduce((a, b) => a + b.amount, 0)}
