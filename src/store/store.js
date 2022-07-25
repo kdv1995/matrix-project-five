@@ -4,7 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { matrixReducer } from "./matrixReducer";
 
 const rootReducer = combineReducers({
-  matrix: matrixReducer,
+  storeMatrix: matrixReducer,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools());

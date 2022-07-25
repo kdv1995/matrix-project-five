@@ -8,7 +8,7 @@ import Input from "../UI/Input/Input";
 import { useDispatch } from "react-redux";
 import s from "../UI/Input/Input.module.scss";
 
-import { setMatrix, setNewRowData } from "../../store/matrixReducer";
+import { setMatrix } from "../../store/matrixReducer";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
@@ -24,19 +24,21 @@ const CreateMatrix = () => {
       [key]: event.target.value,
     }));
   };
-  const newRowData = initialData.rows;
-  dispatch(setNewRowData(newRowData));
   const matrix = [];
   for (let i = 0; i < initialData.rows; i++) {
-    matrix[i] = [];
+    matrix.push({
+      id: i + 1,
+      cutClosestCells: Number(initialData.cells),
+      showDeposit: false,
+      cells: [],
+    });
     for (let j = 0; j < initialData.columns; j++) {
-      matrix[i][j] = {
-        id: `${i}_${j}`,
+      matrix[i].cells.push({
+        id: `${i + 1}_${j + 1}`,
         amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
         closest: false,
         deposit: 0,
-        cutClosestCells: Number(initialData.cells),
-      };
+      });
     }
   }
   return (

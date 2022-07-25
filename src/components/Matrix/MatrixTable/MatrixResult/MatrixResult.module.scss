@@ -12,6 +12,7 @@
   margin: 20px;
   border-radius: 5px;
   background: rgb(103, 218, 249);
+  transition: 0.1s linear;
   cursor: pointer;
 
   &:hover {
@@ -57,5 +58,3 @@
   background: rgb(227, 150, 18);
   cursor: pointer;
 }
-
-

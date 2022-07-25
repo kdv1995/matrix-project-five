@@ -1,43 +1,41 @@
 import React from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
-  setClearValues,
-  setClosestValues,
+  // setClearValues,
+  // setClosestValues,
   setIncrement,
-  setNewRow,
-  setRowPercentage,
+  // setNewRow,
+  // setRowPercentage,
 } from "../../../../store/matrixReducer";
-import Button from "../../../UI/Button/Button";
+// import Button from "../../../UI/Button/Button";
 
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  const matrix = useSelector((state) => state.matrix.matrix);
-  const newRowData = useSelector((state) => state.matrix.newRowData);
+  const matrix = useSelector((state) => state.storeMatrix.matrix);
   const dispatch = useDispatch();
-
-  const handleClosestValues = (item) => {
-    dispatch(setClosestValues(item));
-  };
-  const handleClearValues = (item) => {
-    dispatch(setClearValues(item));
-  };
-  const handleSumDeposit = (id) => {
-    dispatch(setRowPercentage(id));
-  };
-  const addNewRow = () => {
-    const newRow = [];
-    for (let i = 0; i < newRowData; i++) {
-      newRow[i] = {
-        id: Date.now(),
-        amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
-        closest: false,
-        deposit: 0,
-      };
-    }
-    dispatch(setNewRow(newRow));
-  };
+  // const handleClosestValues = (item) => {
+  //   dispatch(setClosestValues(item));
+  // };
+  // const handleClearValues = (item) => {
+  //   dispatch(setClearValues(item));
+  // };
+  // const handleSumDeposit = (row, rowIndex) => {
+  //   dispatch(setRowPercentage({ row, rowIndex }));
+  // };
+  // const addNewRow = () => {
+  //   const newRow = [];
+  //   for (let i = 0; i < newRowData; i++) {
+  //     newRow[i] = {
+  //       id: Date.now(),
+  //       amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
+  //       closest: false,
+  //       deposit: 0,
+  //     };
+  //   }
+  //   dispatch(setNewRow(newRow));
+  // };
   // const deleteRow = () => {};
   // dispatch(setClosestValues(findClosestValues));
   // console.log(findClosestValues);
@@ -50,7 +48,6 @@ const MatrixResult = () => {
   // };
   return (
     <>
-      <Button onClick={addNewRow} title="Add new row" />
       <table>
         <thead>
           <tr className={s.TableColumnIndices}>
@@ -65,48 +62,56 @@ const MatrixResult = () => {
           {matrix.map((row, rowIndex) => (
             <tr key={rowIndex}>
               <td className={s.TableRowIndices}>{rowIndex + 1}</td>
-              {row.map((item, index) => (
+              {row.cells.map((cell) => (
                 <td
-                  onClick={() => dispatch(setIncrement(item.id))}
-                  onMouseEnter={() => handleClosestValues(item)}
-                  onMouseLeave={() => handleClearValues(item)}
-                  key={index}
+                  onClick={() => dispatch(setIncrement(cell.id))}
+                  // onMouseEnter={() => handleClosestValues(item)}
+                  // onMouseLeave={() => handleClearValues(item)}
+                  // key={index}
                   className={s.TableRowData}
-                  style={{ background: item.closest && "red" }}
+                  // style={{
+                  //   backgroundColor: item.closest && "red",
+                  //   background:
+                  //     item.showDeposit &&
+                  //     `linear-gradient(0deg, rgba(203,13,13,1) ${item.deposit}%, rgba(0,212,255,0) ${item.deposit}%)`,
+                  // }}
                 >
-                  {item.amount}
+                  {cell.amount}
                 </td>
               ))}
               <td
-                onMouseEnter={() => handleSumDeposit(row, rowIndex)}
+                // onMouseEnter={() => handleSumDeposit(row, rowIndex)}
                 className={s.TableRowSum}
               >
-                {row.reduce((a, b) => a + b.amount, 0)}
+                {row.cells.reduce((a, b) => a + b.amount, 0)}
               </td>
               {/* <Button title="DL Row" /> */}
             </tr>
           ))}
-          <tr>
-            <td className={s.TableAverageName}>Avg</td>
-            {matrix
-              .map((item) => item.map((x) => x.amount))
-              .reduce((a, b) => a.map((x, i) => x + b[i]))
-              .map((item) => Math.round(item / matrix.length))
-              .map((item, index) => (
-                <td key={index} className={s.TableColumnAverage}>
-                  {item}
-                </td>
-              ))}
-            <td className={s.TableColumnAverageSum}>
+          {
+            <tr>
+              <td className={s.TableAverageName}>Avg</td>
               {matrix
-                .map((item) => item.map((x) => x.amount))
+                .map((item) => item.cells.map((x) => x.amount))
                 .reduce((a, b) => a.map((x, i) => x + b[i]))
                 .map((item) => Math.round(item / matrix.length))
-                .reduce((a, b) => a + b, 0)}
-            </td>
-          </tr>
+                .map((item, index) => (
+                  <td key={index} className={s.TableColumnAverage}>
+                    {item}
+                  </td>
+                ))}
+              <td className={s.TableColumnAverageSum}>
+                {matrix
+                  .map((item) => item.cells.map((x) => x.amount))
+                  .reduce((a, b) => a.map((x, i) => x + b[i]))
+                  .map((item) => Math.round(item / matrix.length))
+                  .reduce((a, b) => a + b, 0)}
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
+      ;
     </>
   );
 };
