@@ -2,11 +2,11 @@ import React from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
-  // setClearValues,
-  // setClosestValues,
+  setClearValues,
+  setClosestValues,
   setIncrement,
   // setNewRow,
-  // setRowPercentage,
+  setRowPercentage,
 } from "../../../../store/matrixReducer";
 // import Button from "../../../UI/Button/Button";
 
@@ -14,16 +14,17 @@ import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
   const matrix = useSelector((state) => state.storeMatrix.matrix);
+  console.log(matrix);
   const dispatch = useDispatch();
-  // const handleClosestValues = (item) => {
-  //   dispatch(setClosestValues(item));
-  // };
-  // const handleClearValues = (item) => {
-  //   dispatch(setClearValues(item));
-  // };
-  // const handleSumDeposit = (row, rowIndex) => {
-  //   dispatch(setRowPercentage({ row, rowIndex }));
-  // };
+  const handleClosestValues = (cell) => {
+    dispatch(setClosestValues(cell));
+  };
+  const handleClearValues = (cell) => {
+    dispatch(setClearValues(cell));
+  };
+  const handleSumDeposit = (row, rowIndex) => {
+    dispatch(setRowPercentage({ row, rowIndex }));
+  };
   // const addNewRow = () => {
   //   const newRow = [];
   //   for (let i = 0; i < newRowData; i++) {
@@ -62,25 +63,25 @@ const MatrixResult = () => {
           {matrix.map((row, rowIndex) => (
             <tr key={rowIndex}>
               <td className={s.TableRowIndices}>{rowIndex + 1}</td>
-              {row.cells.map((cell) => (
+              {row.cells.map((cell, index) => (
                 <td
                   onClick={() => dispatch(setIncrement(cell.id))}
-                  // onMouseEnter={() => handleClosestValues(item)}
-                  // onMouseLeave={() => handleClearValues(item)}
-                  // key={index}
+                  onMouseEnter={() => handleClosestValues(cell)}
+                  onMouseLeave={() => handleClearValues(cell)}
+                  key={index}
                   className={s.TableRowData}
-                  // style={{
-                  //   backgroundColor: item.closest && "red",
-                  //   background:
-                  //     item.showDeposit &&
-                  //     `linear-gradient(0deg, rgba(203,13,13,1) ${item.deposit}%, rgba(0,212,255,0) ${item.deposit}%)`,
-                  // }}
+                  style={{
+                    backgroundColor: cell.closest && "red",
+                    // background:
+                    // item.showDeposit &&
+                    // `linear-gradient(0deg, rgba(203,13,13,1) ${item.deposit}%, rgba(0,212,255,0) ${item.deposit}%)`,
+                  }}
                 >
                   {cell.amount}
                 </td>
               ))}
               <td
-                // onMouseEnter={() => handleSumDeposit(row, rowIndex)}
+                onMouseEnter={() => handleSumDeposit(row, rowIndex)}
                 className={s.TableRowSum}
               >
                 {row.cells.reduce((a, b) => a + b.amount, 0)}
@@ -111,7 +112,6 @@ const MatrixResult = () => {
           }
         </tbody>
       </table>
-      ;
     </>
   );
 };
