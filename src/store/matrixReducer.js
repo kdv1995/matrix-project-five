@@ -8,6 +8,7 @@ const SET_INCREMENT = "SET_INCREMENT";
 const SET_CLOSEST_VALUES = "SET_CLOSEST_VALUES";
 const SET_CLEAR_VALUES = "SET_CLEAR_VALUES";
 const SET_ROW_PERCENTAGE = "SET_ROW_PERCENTAGE";
+const SET_CLEAR_DEPOSIT = "SET_CLEAR_DEPOSIT";
 // const SET_NEW_ROW = "SET_NEW_ROW";
 // const SET_DELETE_ROW = "SET_DELETE_ROW";
 
@@ -65,34 +66,47 @@ export const matrixReducer = (state = initialState, action) => {
       };
     case SET_ROW_PERCENTAGE:
       // console.log(action.payload);
-      const { row } = action.payload;
-      console.log(row);
+      const row_id = action.payload;
+      // console.log(row);
+      const row = state.matrix.find(({ id }) => id === row_id);
+      // console.log(row);
       const rowSum = row.cells.reduce((a, b) => a + b.amount, 0);
       // console.log(rowSum);
-      const findCellDeposit = row.cells.map((cell) =>
-        Math.round((cell.amount / rowSum) * 100)
-      );
-
+      // const findCellDeposit = row.cells.map((cell) =>
+      //   Math.round((cell.amount / rowSum) * 100)
+      // );
       // console.log(findCellDeposit);
       return {
         ...state,
+        matrix: state.matrix.map((row) => {
+          if (row_id === row.id) {
+            return {
+              ...row,
+              showDeposit: true,
+              cells: row.cells.map((cell) => ({
+                ...cell,
+                deposit: Math.round((cell.amount / rowSum) * 100),
+              })),
+            };
+          }
+          return row;
+        }),
         // matrix: state.matrix.map((row, rowIndex) => {
         //   if (rowIndex === action.payload.rowIndex) {
         //     return row.map((cell) => ({
         //       ...cell,
-        //       deposit: findPercentage[action.payload.rowIndex],
-        //       showDeposit: true,
+        //       deposit: findCellDeposit[action.payload.rowIndex],
         //     }));
         //   }
         //   return row;
         // }),
+      };
+    case SET_CLEAR_DEPOSIT:
+      return {
+        ...state,
         matrix: state.matrix.map((row) => ({
           ...row,
-          cells: row.cells.map((cell) => ({
-            ...cell,
-            deposit: findCellDeposit[row.id],
-            // showDeposit: true,
-          })),
+          showDeposit: false,
         })),
       };
     // case SET_NEW_ROW:
@@ -119,6 +133,10 @@ export const setClearValues = (payload) => ({
 });
 export const setRowPercentage = (payload) => ({
   type: SET_ROW_PERCENTAGE,
+  payload,
+});
+export const setClearDeposit = (payload) => ({
+  type: SET_CLEAR_DEPOSIT,
   payload,
 });
 // export const setNewRow = (payload) => ({

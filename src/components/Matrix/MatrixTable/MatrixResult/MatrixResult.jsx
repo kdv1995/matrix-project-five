@@ -2,6 +2,7 @@ import React from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
+  setClearDeposit,
   setClearValues,
   setClosestValues,
   setIncrement,
@@ -22,8 +23,11 @@ const MatrixResult = () => {
   const handleClearValues = (cell) => {
     dispatch(setClearValues(cell));
   };
-  const handleSumDeposit = (row, rowIndex) => {
-    dispatch(setRowPercentage({ row, rowIndex }));
+  const handleSumDeposit = (row_id) => {
+    dispatch(setRowPercentage(row_id));
+  };
+  const handleClearDeposit = () => {
+    dispatch(setClearDeposit());
   };
   // const addNewRow = () => {
   //   const newRow = [];
@@ -54,7 +58,10 @@ const MatrixResult = () => {
           <tr className={s.TableColumnIndices}>
             <td>№</td>
             {matrix.map((_, rowIndex) => (
-              <td>{rowIndex + 1}</td>
+              <>
+                {/* <td>{rowIndex + 1}</td> */}
+                <td>{rowIndex}</td>
+              </>
             ))}
             <td>Sum</td>
           </tr>
@@ -72,16 +79,17 @@ const MatrixResult = () => {
                   className={s.TableRowData}
                   style={{
                     backgroundColor: cell.closest && "red",
-                    // background:
-                    // item.showDeposit &&
-                    // `linear-gradient(0deg, rgba(203,13,13,1) ${item.deposit}%, rgba(0,212,255,0) ${item.deposit}%)`,
+                    background:
+                      row.showDeposit &&
+                      `linear-gradient(0deg, rgba(203,13,13,1) ${cell.deposit}%, rgba(0,212,255,0) ${cell.deposit}%)`,
                   }}
                 >
-                  {cell.amount}
+                  {row.showDeposit ? `${cell.deposit}%` : cell.amount}
                 </td>
               ))}
               <td
-                onMouseEnter={() => handleSumDeposit(row, rowIndex)}
+                onMouseEnter={() => handleSumDeposit(row.id)}
+                onMouseLeave={handleClearDeposit}
                 className={s.TableRowSum}
               >
                 {row.cells.reduce((a, b) => a + b.amount, 0)}
