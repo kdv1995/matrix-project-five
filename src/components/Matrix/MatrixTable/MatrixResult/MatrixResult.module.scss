@@ -12,13 +12,21 @@
   margin: 20px;
   border-radius: 5px;
   background: rgb(103, 218, 249);
-  transition: 0.05s linear;
+  transition: 0.2s linear;
   cursor: pointer;
 
   &:hover {
     background: rgb(56, 56, 56);
     color: rgb(255, 255, 255);
   }
+}
+.TableRowDataDelete {
+  text-align: center;
+  // padding: 1px;
+  border-radius: 5px;
+  background: rgb(194, 192, 192);
+  transition: 0.2s linear;
+  cursor: pointer;
 }
 .TableRowClosestHover {
   background: yellowgreen;

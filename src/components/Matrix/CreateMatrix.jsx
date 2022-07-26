@@ -8,7 +8,12 @@ import Input from "../UI/Input/Input";
 import { useDispatch } from "react-redux";
 import s from "../UI/Input/Input.module.scss";
 
-import { setMatrix } from "../../store/matrixReducer";
+import { nanoid } from "nanoid";
+import {
+  setMatrix,
+  setNewRowData,
+  setNumberToCut,
+} from "../../store/matrixReducer";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
@@ -18,23 +23,27 @@ const CreateMatrix = () => {
     columns: 0,
     cells: 0,
   });
+  const newRowData = { rows: initialData.rows, columns: initialData.columns };
+  dispatch(setNewRowData(newRowData));
+  const numberToCut = initialData.cells;
+  dispatch(setNumberToCut(numberToCut));
   const onHandleChange = (event, key) => {
     setInitialData((prevState) => ({
       ...prevState,
       [key]: event.target.value,
     }));
   };
+
   const matrix = [];
   for (let i = 0; i < initialData.rows; i++) {
     matrix.push({
-      id: i + 1,
-      cutClosestCells: Number(initialData.cells),
+      id: nanoid(),
       showDeposit: false,
       cells: [],
     });
     for (let j = 0; j < initialData.columns; j++) {
       matrix[i].cells.push({
-        id: `${i + 1}_${j + 1}`,
+        id: nanoid(),
         amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
         closest: false,
         deposit: 0,

@@ -1,22 +1,27 @@
+import { nanoid } from "nanoid";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector, useDispatch } from "react-redux";
 import {
   setClearDeposit,
   setClearValues,
   setClosestValues,
+  setDeleteRow,
   setIncrement,
-  // setNewRow,
+  setNewRow,
   setRowPercentage,
 } from "../../../../store/matrixReducer";
-// import Button from "../../../UI/Button/Button";
+
+import Button from "../../../UI/Button/Button";
+import deleteicon from "./MatrixResultImg/icons8-trash.svg";
 
 import s from "./MatrixResult.module.scss";
 
 const MatrixResult = () => {
-  const matrix = useSelector((state) => state.storeMatrix.matrix);
-  console.log(matrix);
   const dispatch = useDispatch();
+  const matrix = useSelector((state) => state.storeMatrix.matrix);
+  const newRowData = useSelector((state) => state.storeMatrix.newRowData);
+  console.log(matrix);
   const handleClosestValues = (cell) => {
     dispatch(setClosestValues(cell));
   };
@@ -29,39 +34,37 @@ const MatrixResult = () => {
   const handleClearDeposit = () => {
     dispatch(setClearDeposit());
   };
-  // const addNewRow = () => {
-  //   const newRow = [];
-  //   for (let i = 0; i < newRowData; i++) {
-  //     newRow[i] = {
-  //       id: Date.now(),
-  //       amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
-  //       closest: false,
-  //       deposit: 0,
-  //     };
-  //   }
-  //   dispatch(setNewRow(newRow));
-  // };
-  // const deleteRow = () => {};
-  // dispatch(setClosestValues(findClosestValues));
-  // console.log(findClosestValues);
-  // const handleSumDeposit = (event, id) => {
-  //   setAverage(event.target.innerText);
-  //   const findRow = matrix.map((x) => x)[id];
-  //   const findRowPercentage = findRow.map((x) => (x.amount / average) * 100);
-  //   console.log(findRow);
-  //   console.log(findRowPercentage);
-  // };
+  const addNewRow = () => {
+    const newRow = {
+      id: nanoid(),
+      cells: [],
+      showDeposit: false,
+    };
+
+    for (let j = 0; j < newRowData.columns; j++) {
+      newRow.cells.push({
+        id: nanoid(),
+        amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
+        closest: false,
+        deposit: 0,
+      });
+    }
+
+    dispatch(setNewRow(newRow));
+  };
+  const deleteRow = (row_id) => {
+    dispatch(setDeleteRow(row_id));
+  };
+
   return (
     <>
+      <Button onClick={addNewRow} title="Add a new row" />
       <table>
         <thead>
           <tr className={s.TableColumnIndices}>
             <td>№</td>
-            {matrix.map((_, rowIndex) => (
-              <>
-                {/* <td>{rowIndex + 1}</td> */}
-                <td>{rowIndex}</td>
-              </>
+            {matrix[0].cells.map((_, cellIndex) => (
+              <td>{cellIndex + 1}</td>
             ))}
             <td>Sum</td>
           </tr>
@@ -94,7 +97,19 @@ const MatrixResult = () => {
               >
                 {row.cells.reduce((a, b) => a + b.amount, 0)}
               </td>
-              {/* <Button title="DL Row" /> */}
+              <td>
+                <button
+                  onClick={() => deleteRow(row.id)}
+                  className={s.TableRowDataDelete}
+                >
+                  <img
+                    src={deleteicon}
+                    alt="delete_icon"
+                    width="30px"
+                    height="25px"
+                  />
+                </button>
+              </td>
             </tr>
           ))}
           {
