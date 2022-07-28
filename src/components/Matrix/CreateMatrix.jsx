@@ -1,39 +1,43 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import Button from "../UI/Button/Button";
-import Heading from "../UI/Heading/Heading";
-import Input from "../UI/Input/Input";
+import Button from "components/UI/Button/Button";
+import Heading from "components/UI/Heading/Heading";
+import Input from "components/UI/Input/Input";
 
+import s from "components/UI/Input/Input.module.scss";
 import { useDispatch } from "react-redux";
-import s from "../UI/Input/Input.module.scss";
 
+import MatrixTable from "components/Matrix/MatrixTable/MatrixTable";
+import Loading from "components/UI/Loading/Loading";
 import { nanoid } from "nanoid";
-import {
-  setMatrix,
-  setNewRowData,
-  setNumberToCut,
-} from "../../store/matrixReducer";
+import { setMatrix, setNewRowData, setNumberToCut } from "store/matrixReducer";
 
 const CreateMatrix = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [initialData, setInitialData] = useState({
     rows: 0,
     columns: 0,
     cells: 0,
   });
+  const [matrixVisible, setMatrixVisible] = useState(false);
   const newRowData = { rows: initialData.rows, columns: initialData.columns };
-  dispatch(setNewRowData(newRowData));
   const numberToCut = initialData.cells;
-  dispatch(setNumberToCut(numberToCut));
+
+  useEffect(() => {
+    dispatch(setNewRowData(newRowData));
+    dispatch(setNumberToCut(numberToCut));
+  });
+
   const onHandleChange = (event, key) => {
     setInitialData((prevState) => ({
       ...prevState,
       [key]: event.target.value,
     }));
   };
-
+  const onHandleMatrix = () => {
+    dispatch(setMatrix(matrix));
+    setMatrixVisible(true);
+  };
   const matrix = [];
   for (let i = 0; i < initialData.rows; i++) {
     matrix.push({
@@ -50,6 +54,7 @@ const CreateMatrix = () => {
       });
     }
   }
+
   return (
     <>
       <Heading title="Matrix builder" />
@@ -81,11 +86,13 @@ const CreateMatrix = () => {
         />
       </div>
       <div>
-        <Button
-          title="Create a matrix"
-          onClick={() => dispatch(setMatrix(matrix), navigate("matrixtable"))}
-        />
+        <Button title="Create a matrix" onClick={onHandleMatrix} />
       </div>
+      {matrixVisible === true ? (
+        <MatrixTable />
+      ) : (
+        <Loading title="Please, set the inputs to build Matrix" />
+      )}
     </>
   );
 };

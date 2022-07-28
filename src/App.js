@@ -1,20 +1,14 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import s from "./App.module.scss";
-
-import CreateMatrix from "./components/Matrix/CreateMatrix";
-
-import MatrixTable from "./components/Matrix/MatrixTable/MatrixTable";
+import styles from "App.module.scss";
+import CreateMatrix from "components/Matrix/CreateMatrix";
 
 const App = () => {
   return (
-    <div className={s.App}>
-      <div className={s.AppContainer}>
-        <CreateMatrix />
+    <div className={styles.App}>
+      <div className={styles.Container}>
+        <main>
+          <CreateMatrix />
+        </main>
       </div>
-      <Routes>
-        <Route path="matrixtable" element={<MatrixTable />} />
-      </Routes>
     </div>
   );
 };
