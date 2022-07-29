@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Loading = (props) => {
-  const { title } = props;
-  return (
-    <>
-      <h3 style={{ textAlign: "center", color: "yellow" }}>{title}</h3>
-    </>
-  );
+function Loading({ title }) {
+  return <h3 style={{ textAlign: 'center', color: 'yellow' }}>{title}</h3>;
+}
+
+Loading.propTypes = {
+  title: PropTypes.string.isRequired,
 };
 
 export default Loading;
