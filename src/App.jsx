@@ -1,12 +1,15 @@
 import React from 'react';
 
-import MatrixForm from 'pages/Matrix/MatrixForm';
 import 'App.scss';
+
+import Home from 'pages/Home';
 
 function App() {
   return (
     <div className="App">
-      <MatrixForm />
+      <div className="Container">
+        <Home />
+      </div>
     </div>
   );
 }

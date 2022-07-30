@@ -73,7 +73,7 @@ function MatrixForm() {
         value={initialData.cells}
         onChange={(event) => onHandleChange(event, 'cells')}
       />
-      <Button title="Create" onClick={onHandleMatrix} />
+      <Button title="Create matrix" onClick={onHandleMatrix} />
       {matrixVisible === true ? (
         <Matrix />
       ) : (
