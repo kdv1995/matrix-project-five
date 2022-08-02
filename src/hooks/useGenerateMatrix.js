@@ -17,6 +17,7 @@ const useGenerateMatrix = (initialData) => {
         closest: false,
         deposit: 0,
         cellId: `${j + 1}_${j + 1}`,
+        headNumber: `${i + 1}/${j + 1}`,
       });
     }
   }

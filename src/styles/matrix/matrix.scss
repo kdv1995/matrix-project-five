@@ -1,0 +1,46 @@
+.matrix__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.table__cell {
+  padding: 7px;
+  margin: 5px;
+  border-radius: 5px;
+  background: $matrixCellBackground;
+  cursor: pointer;
+  &:hover {
+    background: $matrixCellHoveredBackground;
+    color: $matrixCellHoveredColor;
+  }
+  &_sum {
+    padding: 7px;
+    margin: 5px;
+    border-radius: 5px;
+    background: $matrixCellAndColumnsAverageSum;
+    cursor: pointer;
+  }
+  &_closest {
+    background: $matrixCellClosestHoveredBackground;
+    color: $matrixCellClosestHoveredColor;
+  }
+}
+.table__columns {
+  padding: 7px;
+  margin: 5px;
+  border-radius: 5px;
+  &_average {
+    background: $matrixCellAndColumnsAverageSum;
+    padding: 7px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    &_sum {
+      background: $matrixCellAndColumnsAverageSum;
+      padding: 7px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
