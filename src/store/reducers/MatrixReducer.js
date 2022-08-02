@@ -113,38 +113,3 @@ const MatrixReducer = (state = INITIAL_STATE, action) => {
   }
 };
 export default MatrixReducer;
-
-// export const setMatrix = (payload) => ({ type: SET_MATRIX, payload });
-// export const setIncrement = (payload) => ({ type: SET_INCREMENT, payload });
-// export const setNumberToCut = (payload) => ({
-//   type: SET_NUMBER_TO_CUT,
-//   payload,
-// });
-// export const setClosestValues = (payload) => ({
-//   type: SET_CLOSEST_VALUES,
-//   payload,
-// });
-// export const setClearValues = (payload) => ({
-//   type: SET_CLEAR_VALUES,
-//   payload,
-// });
-// export const setRowPercentage = (payload) => ({
-//   type: SET_ROW_PERCENTAGE,
-//   payload,
-// });
-// export const setClearDeposit = (payload) => ({
-//   type: SET_CLEAR_DEPOSIT,
-//   payload,
-// });
-// export const setNewRow = (payload) => ({
-//   type: SET_NEW_ROW,
-//   payload,
-// });
-// export const setNewRowData = (payload) => ({
-//   type: SET_NEW_ROW_DATA,
-//   payload,
-// });
-// export const setDeleteRow = (payload) => ({
-//   type: SET_DELETE_ROW,
-//   payload,
-// });
