@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "src"
   },
-  "include": ["src", "src/store/reducers/.js"],
+  "include": ["src", "src/store/reducers/.js"]
 }

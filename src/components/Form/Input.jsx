@@ -13,7 +13,7 @@ function Input({ title, value, onChange }) {
 }
 Input.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func,
 };
 

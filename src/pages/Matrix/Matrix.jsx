@@ -1,121 +1,107 @@
-// import React from 'react';
-// import { nanoid } from 'nanoid';
-// import { useDispatch, useSelector } from 'react-redux';
-// import {
-//   setClearDeposit,
-//   setClearValues,
-//   setClosestValues,
-//   setDeleteRow,
-//   setIncrement,
-//   setNewRow,
-//   setRowPercentage,
-// } from 'store/matrixReducer';
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 
-// import deleteicon from 'assets/icons8-trash.svg';
+import React, { useMemo } from 'react';
 
-// import Button from 'components/UI/Button';
+import deleteIcon from 'assets/icons/deleteIcon.svg';
+import Button from 'components/UI/Button/Button';
+import useGenerateRow from 'hooks/useGenerateRow';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setClearDeposit,
+  setClearValues,
+  setClosestValues,
+  setDeleteRow,
+  setIncrement,
+  setNewRow,
+  setRowPercentage,
+} from 'store/actions';
 
-// function Matrix() {
-//   const dispatch = useDispatch();
-//   const matrix = useSelector((state) => state.storeMatrix.matrix);
-//   const newRowData = useSelector((state) => state.storeMatrix.newRowData);
-//   const handleClosestValues = (cell) => {
-//     dispatch(setClosestValues(cell));
-//   };
-//   const handleClearValues = (cell) => {
-//     dispatch(setClearValues(cell));
-//   };
-//   const handleSumDeposit = (rowDepositId) => {
-//     dispatch(setRowPercentage(rowDepositId));
-//   };
-//   const handleClearDeposit = () => {
-//     dispatch(setClearDeposit());
-//   };
-//   const addNewRow = () => {
-//     const newRow = {
-//       id: nanoid(),
-//       cells: [],
-//       showDeposit: false,
-//     };
+function Matrix() {
+  const dispatch = useDispatch();
+  const matrix = useSelector((state) => state.storeMatrix.matrix);
+  const newRowData = useSelector((state) => state.storeMatrix.newRowData);
+  const findRes = useMemo(
+    () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      matrix
+        .map((rowFindRes) => rowFindRes.cells.map((cellFindRes) => cellFindRes.amount))
+        .reduce((a, b) => a.map((x, i) => x + b[i]))
+        .map((item) => Math.round(item / matrix.length)),
+    [matrix],
+  );
+  const onHandleIncrement = (cellIncrement) => {
+    dispatch(setIncrement(cellIncrement));
+  };
+  const handleClosestValues = (cellClosest) => {
+    dispatch(setClosestValues(cellClosest));
+  };
+  const handleClearValues = () => {
+    dispatch(setClearValues());
+  };
+  const handleSumDeposit = (rowDepositId) => {
+    dispatch(setRowPercentage(rowDepositId));
+  };
+  const handleClearDeposit = () => {
+    dispatch(setClearDeposit());
+  };
+  const newRow = useGenerateRow(newRowData);
+  const addNewRow = () => {
+    dispatch(setNewRow(newRow));
+  };
+  const deleteRow = (rowId) => {
+    dispatch(setDeleteRow(rowId));
+  };
 
-//     for (let j = 0; j < newRowData.columns; j += 1) {
-//       newRow.cells.push({
-//         id: nanoid(),
-//         amount: Math.round(Math.random() * (999 - 100 + 1) + 100),
-//         closest: false,
-//         deposit: 0,
-//       });
-//     }
+  return (
+    <>
+      <Button onClick={addNewRow} title="Add a new row" />
+      <table>
+        <thead>
+          <tr>
+            <td>№</td>
+            {matrix[0].cells.map((_, cellIndex) => (
+              <td>{cellIndex + 1}</td>
+            ))}
+            <td>Sum</td>
+          </tr>
+        </thead>
+        <tbody>
+          {matrix.map((row, rowIndex) => (
+            <tr key={row.rowId}>
+              <td key={row.rowNumber}>{rowIndex + 1}</td>
+              {row.cells.map((cell) => (
+                <td
+                  key={cell.cellId}
+                  onClick={() => onHandleIncrement(cell.id)}
+                  onMouseEnter={() => handleClosestValues(cell)}
+                  onMouseLeave={() => handleClearValues()}
+                  style={{ background: cell.closest && 'red' }}
+                >
+                  {row.showDeposit ? `${cell.deposit}%` : cell.amount}
+                </td>
+              ))}
+              <td onMouseEnter={() => handleSumDeposit(row.id)} onMouseLeave={handleClearDeposit}>
+                {row.cells.reduce((a, b) => a + b.amount, 0)}
+              </td>
+              <td>
+                <button type="button" onClick={() => deleteRow(row.id)}>
+                  <img src={deleteIcon} alt="delete_icon" width="30px" height="25px" />
+                </button>
+              </td>
+            </tr>
+          ))}
+          <tr>
+            <td>Avg</td>
+            {findRes.map((item) => (
+              <td>{item}</td>
+            ))}
+            <td>{findRes.reduce((a, b) => a + b, 0)}</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  );
+}
 
-//     dispatch(setNewRow(newRow));
-//   };
-//   const deleteRow = (rowId) => {
-//     dispatch(setDeleteRow(rowId));
-//   };
-
-//   return (
-//     <>
-//       <Button onClick={addNewRow} title="Add a new row" />
-//       <table>
-//         <thead>
-//           <tr>
-//             <td>№</td>
-//             {matrix[0].cells.map((_, cellIndex) => (
-//               <td>{cellIndex + 1}</td>
-//             ))}
-//             <td>Sum</td>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {matrix.length > 0
-//             ? matrix.map((row, rowIndex) => (
-//                 <tr key={row}>
-//                   <td>{rowIndex}</td>
-//                   {row.cells.map((cell) => (
-//                     <td
-//                       onClick={() => dispatch(setIncrement(cell.id))}
-//                       onMouseEnter={() => handleClosestValues(cell)}
-//                       onMouseLeave={() => handleClearValues(cell)}
-//                       key={cell.id}
-//                     >
-//                       {row.showDeposit ? `${cell.deposit}%` : cell.amount}
-//                     </td>
-//                   ))}
-//                   <td
-//                     onMouseEnter={() => handleSumDeposit(row.id)}
-//                     onMouseLeave={handleClearDeposit}
-//                   >
-//                     {row.cells.reduce((a, b) => a + b.amount, 0)}
-//                   </td>
-//                   <td>
-//                     <button type="button" onClick={() => deleteRow(row.id)}>
-//                       <img src={deleteicon} alt="delete_icon" width="30px" height="25px" />
-//                     </button>
-//                   </td>
-//                 </tr>
-//               ))
-//             : 'Matrix is empty'}
-//           <tr>
-//             <td>Avg</td>
-//             {matrix
-//               .map((item) => item.cells.map((x) => x.amount))
-//               .reduce((a, b) => a.map((x, i) => x + b[i]))
-//               .map((item) => Math.round(item / matrix.length))
-//               .map((item) => (
-//                 <td key={item.id}>{item}</td>
-//               ))}
-//             <td>
-//               {matrix
-//                 .map((item) => item.cells.map((x) => x.amount))
-//                 .reduce((a, b) => a.map((x, i) => x + b[i]))
-//                 .map((item) => Math.round(item / matrix.length))
-//                 .reduce((a, b) => a + b, 0)}
-//             </td>
-//           </tr>
-//         </tbody>
-//       </table>
-//     </>
-//   );
-// }
-
-// export default Matrix;
+export default Matrix;

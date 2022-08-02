@@ -5,31 +5,32 @@ const INITIAL_STATE = {
   newRowData: {},
   numberToCut: 0,
 };
-const MatrixReducer = (action, state = INITIAL_STATE) => {
-  switch (action.type) {
+// eslint-disable-next-line default-param-last
+const MatrixReducer = (state = INITIAL_STATE, action) => {
+  const { type, payload } = action;
+  switch (type) {
     case types.SET_MATRIX:
-      return { ...state, matrix: action.payload };
-    case types.SET_INCREMENT: {
+      return { ...state, matrix: payload };
+    case types.SET_INCREMENT:
       return {
         ...state,
-        matrix: state.matrix.map((row) => ({
-          ...row,
-          cells: row.cells.map((cell) => {
-            if (cell.id === action.payload) {
-              return { ...cell, amount: cell.amount + 1 };
+        matrix: state.matrix.map((rowIncrement) => ({
+          ...rowIncrement,
+          cells: rowIncrement.cells.map((cellIncrement) => {
+            if (cellIncrement.id === payload) {
+              return { ...cellIncrement, amount: cellIncrement.amount + 1 };
             }
-            return cell;
+            return cellIncrement;
           }),
         })),
       };
-    }
     case types.SET_NUMBER_TO_CUT:
       return {
         ...state,
-        numberToCut: action.payload,
+        numberToCut: payload,
       };
     case types.SET_CLOSEST_VALUES: {
-      const { id, amount } = action.payload;
+      const { id, amount } = payload;
       const findClosestCells = state.matrix
         .map((row) => row.cells)
         .flat()
@@ -42,16 +43,16 @@ const MatrixReducer = (action, state = INITIAL_STATE) => {
         .slice(0, state.numberToCut);
       return {
         ...state,
-        matrix: state.matrix.map((row) => ({
-          ...row,
-          cells: row.cells.map((cell) => ({
-            ...cell,
-            closest: findClosestCells.find((item) => item.id === cell.id),
+        matrix: state.matrix.map((rowClosest) => ({
+          ...rowClosest,
+          cells: rowClosest.cells.map((cellClosest) => ({
+            ...cellClosest,
+            closest: findClosestCells.find((item) => item.id === cellClosest.id),
           })),
         })),
       };
     }
-    case types.SET_CLEAR_VALUES: {
+    case types.SET_CLEAR_VALUES:
       return {
         ...state,
         matrix: state.matrix.map((row) => ({
@@ -62,7 +63,6 @@ const MatrixReducer = (action, state = INITIAL_STATE) => {
           })),
         })),
       };
-    }
     case types.SET_ROW_PERCENTAGE: {
       const rowId = action.payload;
       const rowFindPassed = state.matrix.find((rowFind) => rowFind.id === rowId);
